@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Developer Intelligence Quiz — Rank Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#9B6D22;--gold-light:#C8922E;--gold-pale:#F5ECD4;--gold-text:#7A5118;
+  --ink:#1A0F02;--ink-soft:#2E1E06;--cream:#FBF7F0;--cream-dark:#F3EDE0;
+  --text-1:#1A0F02;--text-2:#6B5535;--text-3:#9B8060;--text-4:#C4AD8A;
+  --border-1:#DDD0B8;--border-2:#EAE0CE;--border-3:#F2EBD9;
+  --shadow-lg:0 12px 40px rgba(26,15,2,.13);
+  --r-sm:6px;--r-md:10px;--r-lg:14px;--r-xl:20px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text-1);
+  min-height:100vh;display:flex;align-items:flex-start;justify-content:center;
+  padding:2rem 1rem 4rem;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+}
+#shell{width:100%;max-width:680px;position:relative;z-index:1}
+.site-header{display:flex;align-items:center;justify-content:space-between;padding:0 0 1.75rem}
+.wordmark{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--gold);letter-spacing:.04em;text-decoration:none}
+.wordmark span{color:var(--text-3);font-weight:400;font-size:13px;margin-left:8px;letter-spacing:.02em}
+.card{background:#FFFDF8;border:.5px solid var(--border-2);border-radius:var(--r-xl);box-shadow:var(--shadow-lg);overflow:hidden}
+.screen{display:none}
+.screen.active{display:block;animation:fu .42s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* SVG icon helper */
+.ico{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.ico svg{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+
+/* INTRO */
+.intro-inner{padding:3rem 2.5rem 2.5rem}
+.intro-eyebrow{font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;display:flex;align-items:center;gap:10px}
+.intro-eyebrow::after{content:'';flex:1;height:.5px;background:var(--border-2)}
+.intro-headline{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:700;color:var(--text-1);line-height:1.15;margin-bottom:1.1rem}
+.intro-headline em{color:var(--gold);font-style:italic}
+.intro-body{font-size:14px;color:var(--text-2);line-height:1.75;margin-bottom:2.25rem;max-width:480px}
+.intro-meta{display:flex;flex-wrap:wrap;gap:1.25rem;margin-bottom:2.5rem}
+.meta-pill{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text-3)}
+.meta-pill .ico{font-size:15px;color:var(--gold)}
+.btn-start{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:var(--gold-pale);border:none;border-radius:var(--r-sm);padding:14px 36px;font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:500;letter-spacing:.03em;cursor:pointer;transition:background .2s,transform .15s;box-shadow:0 2px 12px rgba(26,15,2,.18)}
+.btn-start:hover{background:var(--ink-soft)}.btn-start:active{transform:scale(.97)}
+.btn-start .ico{font-size:16px;color:var(--gold-pale)}
+.intro-rule{height:.5px;background:var(--border-2);margin:2.5rem 0}
+.intro-note{font-size:12px;color:var(--text-4);line-height:1.65;font-style:italic}
+
+/* CHROME */
+.q-chrome{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2.5rem 0;margin-bottom:1.25rem}
+.chrome-brand{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-4);font-weight:400}
+.chrome-right{display:flex;align-items:center;gap:10px}
+.step-label{font-size:12px;color:var(--text-3)}
+.step-dots{display:flex;gap:3px}
+.dot{width:20px;height:2px;border-radius:2px;background:var(--border-2);transition:background .35s}
+.dot.done{background:var(--gold)}.dot.active{background:var(--gold);opacity:.45}
+.progress-strip{height:1px;background:var(--border-3);margin:1rem 2.5rem 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold-text),var(--gold-light));border-radius:1px;transition:width .55s ease}
+
+/* QUESTION */
+.q-body{padding:2rem 2.5rem 1.5rem}
+.q-eyebrow{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem}
+.q-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--text-1);line-height:1.3;margin-bottom:.45rem}
+.q-sub{font-size:12.5px;color:var(--text-3);margin-bottom:1.75rem;line-height:1.55;font-style:italic}
+
+/* NAV */
+.nav-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 2.5rem 1.75rem;border-top:.5px solid var(--border-3);margin-top:.5rem}
+.btn-back{display:flex;align-items:center;gap:6px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text-3);cursor:pointer;padding:8px 0;transition:color .2s}
+.btn-back:hover{color:var(--text-1)}.btn-back .ico{font-size:15px}
+.btn-next{display:flex;align-items:center;gap:7px;background:var(--ink);color:var(--gold-pale);border:none;border-radius:var(--r-sm);padding:11px 28px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;transition:opacity .2s,transform .1s;letter-spacing:.02em}
+.btn-next:disabled{opacity:.25;cursor:not-allowed}.btn-next:not(:disabled):hover{opacity:.85}.btn-next:not(:disabled):active{transform:scale(.97)}
+.btn-next .ico{font-size:15px;color:var(--gold-pale)}.btn-next.finish{background:var(--gold);color:#fff}
+.btn-next.finish .ico{color:#fff}
+
+/* OPTIONS */
+.opt-stack{display:flex;flex-direction:column;gap:9px}
+.opt-card{display:flex;align-items:flex-start;gap:12px;padding:.9rem 1.1rem;border:.5px solid var(--border-2);border-radius:var(--r-md);background:#FFFDF8;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:border-color .2s,background .15s,transform .1s}
+.opt-card:hover{border-color:var(--gold-light);background:var(--cream-dark)}.opt-card.sel{border:1.5px solid var(--gold);background:var(--cream-dark)}.opt-card:active{transform:scale(.985)}
+.opt-ico-wrap{flex-shrink:0;margin-top:1px;font-size:17px;color:var(--text-4);transition:color .2s}.opt-card.sel .opt-ico-wrap{color:var(--gold)}
+.opt-main{font-size:13.5px;font-weight:500;color:var(--text-1);margin-bottom:2px;line-height:1.3}
+.opt-hint{font-size:11.5px;color:var(--text-3);line-height:1.45}
+.other-expand{margin-top:8px;display:none}.other-expand.open{display:block}
+.other-input{width:100%;border:none;border-bottom:.5px solid var(--border-1);background:transparent;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text-1);padding:5px 0;outline:none;transition:border-color .2s}
+.other-input:focus{border-bottom-color:var(--gold)}.other-input::placeholder{color:var(--text-4);font-style:italic}
+
+/* FC */
+.fc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fc-card{border:.5px solid var(--border-2);border-radius:var(--r-lg);padding:1.25rem 1.1rem;cursor:pointer;text-align:center;background:#FFFDF8;user-select:none;-webkit-tap-highlight-color:transparent;transition:border-color .2s,background .15s,transform .1s}
+.fc-card:hover{border-color:var(--gold-light);background:var(--cream-dark)}.fc-card.sel{border:1.5px solid var(--gold);background:var(--cream-dark)}.fc-card:active{transform:scale(.975)}
+.fc-ico-wrap{display:flex;justify-content:center;margin-bottom:10px;font-size:24px;color:var(--text-4);transition:color .2s}.fc-card.sel .fc-ico-wrap{color:var(--gold)}
+.fc-title{font-size:13px;font-weight:500;color:var(--text-1);margin-bottom:4px;line-height:1.25}
+.fc-desc{font-size:11px;color:var(--text-3);line-height:1.4}
+
+/* SCENARIO */
+.scn-stack{display:flex;flex-direction:column;gap:10px}
+.scn-card{display:flex;gap:12px;align-items:flex-start;padding:.95rem 1.1rem;border:.5px solid var(--border-2);border-radius:var(--r-md);background:#FFFDF8;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:border-color .2s,background .15s}
+.scn-card:hover{border-color:var(--gold-light);background:var(--cream-dark)}.scn-card.sel{border:1.5px solid var(--gold);background:var(--cream-dark)}
+.scn-dot{width:7px;height:7px;border-radius:50%;background:var(--border-1);margin-top:6px;flex-shrink:0;transition:background .2s}.scn-card.sel .scn-dot{background:var(--gold)}
+.scn-h{font-size:13.5px;font-weight:500;color:var(--text-1);margin-bottom:3px;line-height:1.3}
+.scn-b{font-size:12px;color:var(--text-3);line-height:1.5}
+
+/* RANKING */
+.rank-list{display:flex;flex-direction:column;gap:9px}
+.rank-item{display:flex;align-items:center;gap:11px;padding:.75rem 1rem;border:.5px solid var(--border-2);border-radius:var(--r-md);background:#FFFDF8;cursor:grab;user-select:none;transition:border-color .2s,background .15s,opacity .2s}
+.rank-item.dragging{opacity:.4;border-color:var(--gold)}.rank-item.over{border-color:var(--gold);background:var(--cream-dark)}
+.rk-num{width:24px;height:24px;border-radius:50%;background:var(--cream-dark);border:.5px solid var(--border-1);font-size:11px;font-weight:500;color:var(--text-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .25s,color .25s,border-color .25s}
+.rank-item.placed .rk-num{background:var(--gold);border-color:var(--gold);color:#fff}
+.rk-lbl{font-size:13.5px;color:var(--text-1);flex:1}
+.rk-handle{color:var(--text-4);font-size:16px;display:flex;align-items:center}
+.drag-note{font-size:11.5px;color:var(--text-4);margin-top:9px;font-style:italic;display:flex;align-items:center;gap:6px}
+
+/* SLIDER */
+.slider-context{font-size:12.5px;color:var(--text-2);line-height:1.65;padding:.9rem 1.1rem;border:.5px solid var(--border-2);border-radius:var(--r-md);background:var(--cream-dark);margin-bottom:1.5rem}
+.slider-context strong{color:var(--text-1);font-weight:500}
+.sl-ends{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-4);margin-bottom:.55rem}
+input[type="range"]{width:100%;accent-color:var(--gold);cursor:pointer}
+.sl-readout{text-align:center;margin-top:.9rem}
+.sl-big{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold)}
+.sl-mini{font-size:11.5px;color:var(--text-4);margin-top:2px}
+
+/* RESULT */
+.result-inner{padding:2.5rem}
+.result-band{height:3px;background:linear-gradient(90deg,var(--gold-text),var(--gold-light),var(--gold-pale));margin:-2.5rem -2.5rem 2.5rem}
+.result-eyebrow{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.result-name{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:var(--text-1);line-height:1.2;margin-bottom:.45rem}
+.result-tag{display:inline-block;font-size:11px;padding:3px 11px;border-radius:4px;background:var(--gold-pale);color:var(--gold-text);margin-bottom:1.25rem;letter-spacing:.05em;font-weight:500}
+.result-desc{font-size:13.5px;color:var(--text-2);line-height:1.75;margin-bottom:2rem;padding-bottom:2rem;border-bottom:.5px solid var(--border-2)}
+.insight-box{border:.5px solid var(--gold-light);border-radius:var(--r-md);padding:1.1rem 1.2rem;background:var(--gold-pale);margin-bottom:2rem}
+.insight-eyebrow{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-text);margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
+.insight-text{font-size:13.5px;color:var(--text-1);line-height:1.65}
+.cta-block{background:var(--ink);border-radius:var(--r-lg);padding:2rem 1.75rem;margin-bottom:1.5rem}
+.cta-headline{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--gold-pale);margin-bottom:.4rem;line-height:1.25}
+.cta-sub{font-size:13px;color:#A08050;margin-bottom:1.75rem;line-height:1.6}
+.cta-contacts{display:flex;flex-direction:column;gap:10px;margin-bottom:1.75rem}
+.contact-item{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--gold-pale);text-decoration:none;padding:.7rem .95rem;border:.5px solid rgba(155,109,34,.35);border-radius:var(--r-sm);transition:border-color .2s,background .2s}
+.contact-item:hover{border-color:var(--gold);background:rgba(155,109,34,.1)}
+.contact-item .ico{font-size:18px;color:var(--gold);flex-shrink:0}
+.btn-website{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#fff;border:none;border-radius:var(--r-sm);padding:12px 28px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;letter-spacing:.02em;transition:opacity .2s,transform .1s}
+.btn-website:hover{opacity:.88}.btn-website:active{transform:scale(.97)}
+.btn-website .ico{font-size:16px;color:#fff}
+.reset-link{display:block;text-align:center;font-size:12px;color:var(--text-4);cursor:pointer;margin-top:.75rem;text-decoration:underline;text-underline-offset:3px;background:none;border:none;font-family:inherit;width:100%}
+.reset-link:hover{color:var(--text-3)}
+
+@media(max-width:600px){
+  body{padding:1rem .5rem 3rem}
+  .intro-inner{padding:2rem 1.5rem 2rem}
+  .intro-headline{font-size:32px}
+  .q-chrome,.q-body,.nav-row{padding-left:1.5rem;padding-right:1.5rem}
+  .progress-strip{margin-left:1.5rem;margin-right:1.5rem}
+  .result-inner{padding:1.75rem}
+  .result-band{margin:-1.75rem -1.75rem 1.75rem}
+  .result-name{font-size:28px}
+  .cta-block{padding:1.5rem 1.25rem}
+  .cta-headline{font-size:22px}
+}
+@media(max-width:400px){.fc-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="shell">
+
+  <header class="site-header">
+    <a class="wordmark" href="https://rankgroup.in" target="_blank" rel="noopener">
+      Rank Group <span>&middot; Developer Intelligence</span>
+    </a>
+  </header>
+
+  <div class="card">
+
+    <!-- INTRO -->
+    <div id="s-intro" class="screen active">
+      <div class="intro-inner">
+        <div class="intro-eyebrow">Rank Group &bull; Confidential Assessment</div>
+        <h1 class="intro-headline">What kind of builder<br>are you &mdash; <em>really?</em></h1>
+        <p class="intro-body">10 questions designed by real estate financing specialists &mdash; not a generic survey. Your answers reveal how you think about capital, risk, and partnerships. We use this to have a very different kind of first conversation with you.</p>
+        <div class="intro-meta">
+          <div class="meta-pill"><span class="ico">{ico_clock}</span> 2&ndash;3 minutes</div>
+          <div class="meta-pill"><span class="ico">{ico_lock}</span> Confidential</div>
+          <div class="meta-pill"><span class="ico">{ico_radar}</span> Personality result at the end</div>
+          <div class="meta-pill"><span class="ico">{ico_list}</span> 10 questions</div>
+        </div>
+        <button class="btn-start" onclick="startQ()">
+          Begin Assessment <span class="ico">{ico_arrow_r}</span>
+        </button>
+        <div class="intro-rule"></div>
+        <p class="intro-note">No right or wrong answers. Your instincts matter more than your analysis here. Answer as you are &mdash; not as you think you should be.</p>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="s-quiz" class="screen">
+      <div class="q-chrome">
+        <span class="chrome-brand">Rank Group</span>
+        <div class="chrome-right">
+          <span class="step-label" id="step-label">1 / 10</span>
+          <div class="step-dots" id="step-dots"></div>
+        </div>
+      </div>
+      <div class="progress-strip"><div class="progress-fill" id="progress-fill" style="width:10%"></div></div>
+      <div class="q-body" id="q-body"></div>
+      <div class="nav-row">
+        <button class="btn-back" id="btn-back" onclick="prevQ()">
+          <span class="ico">{ico_arrow_l}</span> Back
+        </button>
+        <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>
+          Next <span class="ico">{ico_arrow_r}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="s-result" class="screen">
+      <div class="result-inner" id="result-inner"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── SVG icon map (inline, no CDN) ──────────────────────────────────────────
+const I = {
+  arrow_r:  `<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`,
+  arrow_l:  `<svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>`,
+  clock:    `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>`,
+  lock:     `<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>`,
+  radar:    `<svg viewBox="0 0 24 24"><path d="M12 12m-1 0a1 1 0 102 0 1 1 0 10-2 0"/><path d="M6.3 6.3a8 8 0 000 11.4M17.7 6.3a8 8 0 010 11.4M3.5 3.5a14 14 0 000 17M20.5 3.5a14 14 0 010 17"/></svg>`,
+  list:     `<svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M5 6v.01M5 12v.01M5 18v.01"/></svg>`,
+  bulb:     `<svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 017 7c0 2.5-1.3 4.7-3.3 6H8.3A7.1 7.1 0 015 9a7 7 0 017-7z"/></svg>`,
+  phone:    `<svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>`,
+  mail:     `<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>`,
+  world:    `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg>`,
+  sparkle:  `<svg viewBox="0 0 24 24"><path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5z"/><path d="M5 3l.7 2.3L8 6l-2.3.7L5 9l-.7-2.3L2 6l2.3-.7z" opacity=".5"/></svg>`,
+  grip:     `<svg viewBox="0 0 24 24"><circle cx="9" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="18" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="18" r="1" fill="currentColor" stroke="none"/></svg>`,
+  move:     `<svg viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg>`,
+  // option icons
+  hourglass:`<svg viewBox="0 0 24 24"><path d="M6 2h12v6l-4 4 4 4v6H6v-6l4-4-4-4z"/></svg>`,
+  alert:    `<svg viewBox="0 0 24 24"><path d="M12 9v4M12 17v.01M10.3 3.6L2 20h20L13.7 3.6a2 2 0 00-3.4 0z"/></svg>`,
+  chart:    `<svg viewBox="0 0 24 24"><circle cx="6" cy="18" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="6" r="1"/><path d="M6 18l6-6 3 3 5-7" stroke-width="1.75"/></svg>`,
+  receipt:  `<svg viewBox="0 0 24 24"><path d="M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16l-3-2-2 2-2-2-2 2-2-2zM9 7h6M9 11h6M9 15h4"/><path d="M17 17l2 2" stroke-width="2.5"/></svg>`,
+  pencil:   `<svg viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>`,
+  award:    `<svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8.3 14.7L7 22l5-3 5 3-1.3-7.3"/></svg>`,
+  userchk:  `<svg viewBox="0 0 24 24"><path d="M9 11a4 4 0 100-8 4 4 0 000 8zM3 21v-1a7 7 0 0110.5-6.1"/><path d="M16 19l2 2 4-4"/></svg>`,
+  dotschart:`<svg viewBox="0 0 24 24"><circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"/><circle cx="10" cy="13" r="1.5" fill="currentColor" stroke="none"/><circle cx="15" cy="7" r="1.5" fill="currentColor" stroke="none"/><circle cx="20" cy="4" r="1.5" fill="currentColor" stroke="none"/><path d="M5 19l5-6 5-6 5-3" stroke-width="1.75"/></svg>`,
+  refresh:  `<svg viewBox="0 0 24 24"><path d="M20 11A8 8 0 104 15"/><path d="M4 21v-6h6"/></svg>`,
+  satellite:`<svg viewBox="0 0 24 24"><path d="M4.5 9.5l9-9 5 5-9 9zM5 15l-2 2 4 4 2-2M15 5l2-2 4 4-2 2M13 17l4-4 3 3-4 4zM3 21l3-3"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>`,
+  trending: `<svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h6v6"/></svg>`,
+  phonecall:`<svg viewBox="0 0 24 24"><path d="M15 10a5 5 0 015 5"/><path d="M15 6a9 9 0 019 9"/><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>`,
+  crown:    `<svg viewBox="0 0 24 24"><path d="M3 17l3-8 5 4 3-8 3 8 3-4v9H3v-9z"/><path d="M3 21h18" stroke-width="2"/></svg>`,
+  satellite2:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>`,
+  users:    `<svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-1a6 6 0 0112 0v1"/><path d="M16 3.1a4 4 0 010 7.8M21 21v-1a6 6 0 00-4.3-5.8"/></svg>`,
+  target:   `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>`,
+  bolt:     `<svg viewBox="0 0 24 24"><path d="M13 3l-7 10h7l-1 8 7-10h-7z"/></svg>`,
+  shield:   `<svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 9.7-8 11-4.5-1.3-8-6-8-11V7z"/><path d="M9 12l2 2 4-4"/></svg>`,
+};
+
+function svg(key, cls="") {
+  return `<span class="ico ${cls}" style="font-size:inherit">${I[key]||I.arrow_r}</span>`;
+}
+
+// ── Questions ─────────────────────────────────────────────────────────────
+const QS = [
+  {
+    id:1, type:"scenario", eyebrow:"The beginning",
+    text:"Think back to the first major construction finance or LAP deal you ever closed. What made you choose that particular lender or advisor?",
+    sub:"The reason you chose your first source of capital reveals more about you than any deal since.",
+    opts:[
+      {h:"Someone I trusted referred them",       b:"A colleague, a friend, or a mentor made the introduction. I moved on that relationship.",                 val:"referral"},
+      {h:"They were the only ones who said yes",  b:"Others turned me down or stalled. This lender moved. Beggars can&rsquo;t be choosers &mdash; and it taught me a lot.",  val:"necessity"},
+      {h:"They offered the best terms I could find", b:"I shopped around. I compared. I went with whoever gave me the most competitive structure.",             val:"terms"},
+      {h:"They genuinely understood my project",  b:"Unlike the others, they asked the right questions and gave me a structure that fit my site.",              val:"understanding"}
+    ],
+    score:{referral:{relationship:3,trust:2},necessity:{urgency:2,control:1},terms:{cost:3,control:1},understanding:{structured:2,trust:2,network:1}}
+  },
+  {
+    id:2, type:"scenario", eyebrow:"Your experience",
+    text:"Recall your last significant financing decision. What quietly kept you up at night?",
+    sub:"The most honest answer is usually the first one that comes to mind.",
+    opts:[
+      {h:"Did I leave a better deal on the table?",            b:"A nagging feeling that a sharper advisor could have gotten me a meaningfully better structure.",              val:"fomo"},
+      {h:"Will this lender become difficult mid-project?",     b:"Signed, but watching for the fine print &mdash; covenant traps, delayed tranches, sudden conditions.",      val:"covenant_fear"},
+      {h:"Am I moving too fast without enough information?",   b:"The deal felt right, but the due diligence felt rushed. I said yes before I was fully ready.",               val:"speed_regret"},
+      {h:"Is my advisor really working for me &mdash; or for the lender?", b:"A quiet suspicion about whose interests the advisory firm was actually protecting.",             val:"alignment_doubt"}
+    ],
+    score:{fomo:{network:2,cost:2},covenant_fear:{control:3,trust:-1},speed_regret:{control:2,urgency:-1},alignment_doubt:{trust:-2,relationship:3}}
+  },
+  {
+    id:3, type:"scenario", eyebrow:"Scenario",
+    text:"Your site is 60% complete. Collections are slower than expected. What&rsquo;s your move?",
+    sub:"Choose the scenario closest to your actual approach.",
+    opts:[
+      {h:"Bridge it aggressively",            b:"Pull in short-term construction finance &mdash; even at premium cost &mdash; and push to complete.",   val:"aggressive"},
+      {h:"Renegotiate with existing lenders", b:"Go back to the drawing board. Restructure the current facility before touching new debt.",               val:"restructure"},
+      {h:"Slow down and conserve",            b:"Throttle construction pace. Protect cash. Don&rsquo;t add leverage.",                                   val:"conservative"},
+      {h:"Explore an equity-debt combo",      b:"Bring in a structured funding partner. Share upside to protect the project.",                            val:"structured"}
+    ],
+    score:{aggressive:{risk:3,urgency:2},restructure:{control:3,trust:1},conservative:{control:3,risk:-2},structured:{structured:3,network:2}}
+  },
+  {
+    id:4, type:"ranking", eyebrow:"Your priorities",
+    text:"Rank these from most to least important in a funding deal.",
+    sub:"Drag to reorder. What you place last reveals as much as what you place first.",
+    items:[
+      {lbl:"Speed of closure",                        val:"speed"},
+      {lbl:"Interest rate / cost of funds",           val:"cost"},
+      {lbl:"Lender compliance",                       val:"compliance"},
+      {lbl:"Flexibility of drawdown structure",       val:"flexibility"},
+      {lbl:"Advisor&rsquo;s guidance through the process", val:"support"}
+    ]
+  },
+  {
+    id:5, type:"fc4", eyebrow:"Trust signal",
+    text:"You&rsquo;re evaluating advisory firms for a critical deal. Which one do you instinctively call first?",
+    sub:"",
+    opts:[
+      {icoKey:"award",    title:"The Credentialed Institution", desc:"12 years, &thinsp;&#8377;3,000 Cr closed, large professional team, data-driven process",                              val:"institutional"},
+      {icoKey:"userchk",  title:"The Connected Insider",        desc:"Founder personally knows your city&rsquo;s top lenders &mdash; smaller firm, laser-focused",                         val:"relationship"},
+      {icoKey:"dotschart",title:"The Structuring Specialist",   desc:"Known for complex, creative debt structures &mdash; LAP, mezzanine, inventory funding",                               val:"specialist"},
+      {icoKey:"refresh",  title:"The Lender Turned Advisor",    desc:"Spent 15 years inside a bank&rsquo;s credit committee &mdash; now sits firmly on your side of the table",            val:"ex_lender"}
+    ],
+    score:{institutional:{trust:2,control:1},relationship:{relationship:3,trust:1},specialist:{structured:3,network:1},ex_lender:{trust:3,control:2}}
+  },
+  {
+    id:6, type:"slider", eyebrow:"Rate sensitivity",
+    text:"How much does the interest rate alone drive your choice of lender or advisor?",
+    sub:"",
+    context:"<strong>A quick note on rates:</strong> Even a 0.5% difference in annual interest &mdash; say 14% vs 14.5% &mdash; on a &thinsp;&#8377;50 Cr facility adds up to <strong>&#8377;25 lakh per year</strong> in additional interest cost. This question asks: how much does that number alone shape your decision?",
+    leftLabel:"Rate is just one factor",
+    rightLabel:"Rate is everything",
+    sliderLabels:["I care about the full picture","Rate matters but isn&rsquo;t decisive","It&rsquo;s an important factor","Rate strongly shapes my shortlist","Rate is my primary filter"]
+  },
+  {
+    id:7, type:"mcq-other", eyebrow:"Pain point",
+    text:"What has been your biggest frustration with lenders or advisors in the past?",
+    sub:"Be honest &mdash; this is the most useful answer you&rsquo;ll give us.",
+    opts:[
+      {icoKey:"hourglass", main:"Too slow",                      hint:"Approvals take forever. I lose deals waiting.",                     val:"slow"},
+      {icoKey:"alert",     main:"Overpromised, underdelivered",  hint:"Commitments made, then conditions changed at signing.",             val:"trust_broken"},
+      {icoKey:"chart",     main:"Didn&rsquo;t understand my business", hint:"Generic solutions &mdash; not built for my project type.",   val:"generic"},
+      {icoKey:"receipt",   main:"Hidden costs and fine print",   hint:"The rate was fine. The covenants weren&rsquo;t.",                  val:"opacity"},
+      {icoKey:"pencil",    main:"Something else",                hint:"",                                                                  val:"other", isOther:true}
+    ],
+    score:{slow:{urgency:2},trust_broken:{trust:-2,relationship:2},generic:{network:2,structured:2},opacity:{control:2,trust:-1},other:{}}
+  },
+  {
+    id:8, type:"fc4", eyebrow:"Your relationship style",
+    text:"How do you want your advisory firm to stay connected with you &mdash; beyond the active deal?",
+    sub:"Choose the style that would make you feel genuinely served, not just managed.",
+    opts:[
+      {icoKey:"satellite",  title:"On-call, not intrusive",          desc:"Reach out when I need you. Don&rsquo;t fill my calendar with check-ins I didn&rsquo;t ask for.", val:"on_demand"},
+      {icoKey:"trending",   title:"Proactive market intelligence",   desc:"Send me relevant updates &mdash; rate movements, new lender appetite, regulatory shifts.",       val:"intel"},
+      {icoKey:"phonecall",  title:"Regular strategic check-ins",     desc:"A quarterly call where we review my portfolio posture and how the credit market is moving.",      val:"strategic_checkins"},
+      {icoKey:"crown",      title:"Embedded as part of my core team",desc:"Know my projects as well as I do. Anticipate needs before I have to articulate them.",           val:"embedded"}
+    ],
+    score:{on_demand:{control:2,urgency:1},intel:{structured:2,network:1},strategic_checkins:{relationship:2,trust:2},embedded:{relationship:3,trust:2}}
+  },
+  {
+    id:9, type:"scenario", eyebrow:"Your decision style",
+    text:"A lender your advisor introduced is offering &thinsp;&#8377;40 Cr at 12.5%. Another lender &mdash; one you found yourself &mdash; offers &thinsp;&#8377;40 Cr at 12%. What do you do?",
+    sub:"There&rsquo;s no correct answer. What would you actually do?",
+    opts:[
+      {h:"Take the advisor&rsquo;s lender &mdash; the relationship is the value",  b:"The advisor knows this lender&rsquo;s culture. A 50 bps gap is not worth navigating an unknown lender alone.",                              val:"trust_advisor"},
+      {h:"Take the cheaper lender and tell the advisor",                           b:"50 bps on &thinsp;&#8377;40 Cr is real money. I&rsquo;ll manage the new lender relationship &mdash; that&rsquo;s my job.",                  val:"cost_driven"},
+      {h:"Ask the advisor to match or explain the gap",                            b:"I share the competing offer and expect the advisor to close the gap or justify why the higher-rate lender is still right.",                   val:"negotiate"},
+      {h:"Run a quick independent check before deciding",                          b:"Before committing, I&rsquo;d verify both lenders&rsquo; track records &mdash; covenants, disbursement timelines, reviews.",                  val:"verify"}
+    ],
+    score:{trust_advisor:{relationship:3,trust:2},cost_driven:{cost:3,urgency:1},negotiate:{control:2,network:1},verify:{control:3,trust:1}}
+  },
+  {
+    id:10, type:"mcq", eyebrow:"The ask",
+    text:"What does your ideal advisory relationship look like &mdash; honestly?",
+    sub:"Not what you think you should want. What you actually want.",
+    opts:[
+      {icoKey:"satellite2", main:"On-demand access",       hint:"Available when I need them. Invisible when I don&rsquo;t.",                         val:"on_demand"},
+      {icoKey:"users",      main:"Embedded partner",       hint:"Knows my projects. Anticipates my needs. Proactively updates me.",                  val:"embedded"},
+      {icoKey:"target",     main:"Deal-specific specialist",hint:"Call them for a deal. Done. Clean. No retainer obligation.",                       val:"transactional"},
+      {icoKey:"crown",      main:"Strategic growth ally",  hint:"Help me see the next 3 years of funding &mdash; not just this deal.",               val:"strategic"}
+    ],
+    score:{on_demand:{control:2},embedded:{relationship:3,trust:2},transactional:{cost:2,urgency:1},strategic:{structured:2,network:2,trust:1}}
+  }
+];
+
+const ARCHETYPES = [
+  {
+    id:"speed", name:"The Speed Builder", tag:"High Urgency &middot; High Risk Tolerance",
+    desc:"You operate on momentum. Capital delays are existential threats &mdash; you&rsquo;d rather pay a higher rate and move than wait three weeks for a marginally better offer. Your instinct is to act first, optimize later. You need an advisor who matches your pace.",
+    insight:"Rank Group&rsquo;s advisors are equipped to handle fast-track mandates. We&rsquo;ve closed LAP facilities in under 18 days. Let&rsquo;s talk about your current project and move quickly.",
+    cta:"Book a fast-track call with Rank Group"
+  },
+  {
+    id:"relationship", name:"The Relationship Traditionalist", tag:"High Trust Need &middot; Network-Driven",
+    desc:"You&rsquo;ve built your business on relationships &mdash; and you expect the same from your advisors. Introductions matter. Referrals matter. You want someone who has already sat across a table from your lender before you do.",
+    insight:"Rank Group&rsquo;s senior partners carry decade-long relationships with credit heads across leading lenders. We don&rsquo;t introduce you to someone we don&rsquo;t personally know.",
+    cta:"Request an introduction-first meeting"
+  },
+  {
+    id:"expander", name:"The Aggressive Expander", tag:"Scale-Focused &middot; Network-Hungry",
+    desc:"Growth is your operating system. You need construction finance, inventory funding, and LAP running simultaneously &mdash; sometimes across cities. You&rsquo;ve outgrown single-deal advisors and need a firm that thinks at your scale.",
+    insight:"Rank Group works with multi-project developers to design 12-month debt calendars &mdash; one advisory relationship managing full portfolio visibility across facilities and lenders.",
+    cta:"Schedule a portfolio debt strategy session"
+  },
+  {
+    id:"planner", name:"The Risk-Controlled Planner", tag:"Process-Driven &middot; Conservative",
+    desc:"You think before you move. You want clean documentation, transparent structures, and no surprises at disbursement. You&rsquo;ve seen deals go wrong. A lower rate means nothing if the covenants are poorly structured.",
+    insight:"Rank Group provides a full term sheet comparison and a complete covenant walkthrough before you commit to anything. Transparency is our operating standard &mdash; not a selling point.",
+    cta:"Request our structured debt comparison guide"
+  },
+  {
+    id:"distrustful", name:"The Distrustful Borrower", tag:"Burned Before &middot; High Proof Required",
+    desc:"You&rsquo;ve been overpromised and underdelivered &mdash; and it cost you. You&rsquo;re open to a new advisory relationship, but you need proof before commitment. Credentials matter. References matter.",
+    insight:"Rank Group will connect you directly with existing developer clients who have profiles similar to yours &mdash; before you make any commitment to us.",
+    cta:"Request client reference introductions"
+  },
+  {
+    id:"strategic", name:"The Strategic Partner Seeker", tag:"Long-Term Thinker &middot; High Lifetime Value",
+    desc:"You&rsquo;re not looking for a vendor for this deal. You want a financing architecture partner who can see your portfolio three years ahead &mdash; proactive in insights, structured in thinking, and invested in your long-term growth.",
+    insight:"Rank Group&rsquo;s advisory practice is built around multi-year developer relationships. We&rsquo;d like to build your 3-year debt strategy with you &mdash; starting today.",
+    cta:"Request a complimentary debt strategy review"
+  }
+];
+
+// ── Backend Recording ──────────────────────────────────────────────────────
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyn6LUXm3bK0qdnX30XHicHEXRScBFm6lO4qZOqU2J2Srur5tLOXI1NaV5xT2iyq365cA/exec";
+let hasSubmittedResponse = false;
+
+// ── State ──────────────────────────────────────────────────────────────────
+let qi=0, answers={}, scores={urgency:0,trust:0,cost:0,relationship:0,risk:0,control:0,network:0,structured:0};
+let rankOrder=[], dragSrc=null, sliderVal=50;
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+function startQ(){
+  document.getElementById("s-intro").classList.remove("active");
+  document.getElementById("s-quiz").classList.add("active");
+  renderQ();
+}
+
+function nextQ(){
+  if(qi<QS.length-1){qi++;renderQ();document.getElementById("q-body").scrollIntoView({behavior:"smooth",block:"start"});}
+  else showResult();
+}
+function prevQ(){if(qi>0){qi--;renderQ();}}
+
+// ── Dots ───────────────────────────────────────────────────────────────────
+function renderDots(){
+  const w=document.getElementById("step-dots"); w.innerHTML="";
+  QS.forEach((_,i)=>{const d=document.createElement("div");d.className="dot"+(i<qi?" done":i===qi?" active":"");w.appendChild(d);});
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+function renderQ(){
+  const q=QS[qi];
+  const nb=document.getElementById("btn-next");
+  const bb=document.getElementById("btn-back");
+  document.getElementById("step-label").textContent=`${qi+1} / ${QS.length}`;
+  document.getElementById("progress-fill").style.width=`${((qi+1)/QS.length)*100}%`;
+  renderDots();
+  nb.disabled=true;
+  nb.className="btn-next"+(qi===QS.length-1?" finish":"");
+  nb.innerHTML=qi===QS.length-1?`See my result ${svg("sparkle")}`:`Next ${svg("arrow_r")}`;
+  bb.style.visibility=qi===0?"hidden":"visible";
+  bb.innerHTML=`${svg("arrow_l")} Back`;
+
+  let h=`<div class="q-eyebrow">${q.eyebrow}</div><div class="q-text">${q.text}</div>`;
+  if(q.sub) h+=`<p class="q-sub">${q.sub}</p>`;
+
+  const sel=answers[q.id];
+
+  if(q.type==="fc2"||q.type==="fc4"){
+    h+=`<div class="fc-grid">`;
+    q.opts.forEach((o,i)=>{
+      const s=sel===o.val?"sel":"";
+      h+=`<div class="fc-card ${s}" onclick="pickFC(${i})">
+            <div class="fc-ico-wrap">${svg(o.icoKey||"bolt")}</div>
+            <div class="fc-title">${o.title}</div>
+            <div class="fc-desc">${o.desc}</div>
+          </div>`;
+    });
+    h+=`</div>`;
+  }
+  else if(q.type==="mcq"){
+    h+=`<div class="opt-stack">`;
+    q.opts.forEach((o,i)=>{
+      const s=sel===o.val?"sel":"";
+      h+=`<div class="opt-card ${s}" onclick="pickMCQ(${i})">
+            <span class="opt-ico-wrap">${svg(o.icoKey||"bolt")}</span>
+            <div><div class="opt-main">${o.main}</div><div class="opt-hint">${o.hint}</div></div>
+          </div>`;
+    });
+    h+=`</div>`;
+  }
+  else if(q.type==="mcq-other"){
+    h+=`<div class="opt-stack">`;
+    q.opts.forEach((o,i)=>{
+      const s=sel===o.val?"sel":"";
+      if(o.isOther){
+        const openCls=sel==="other"?"open":"";
+        const savedTxt=answers.other_text||"";
+        h+=`<div class="opt-card ${s}" id="other-card" onclick="pickOther(${i})">
+              <span class="opt-ico-wrap">${svg("pencil")}</span>
+              <div style="flex:1">
+                <div class="opt-main">${o.main}</div>
+                <div class="other-expand ${openCls}" id="other-expand">
+                  <input class="other-input" id="other-input" type="text"
+                    placeholder="Describe your biggest frustration briefly&hellip;"
+                    maxlength="140" value="${savedTxt}"
+                    oninput="onOtherType(this.value)" />
+                </div>
+              </div>
+            </div>`;
+      } else {
+        h+=`<div class="opt-card ${s}" onclick="pickMCQ(${i})">
+              <span class="opt-ico-wrap">${svg(o.icoKey||"bolt")}</span>
+              <div><div class="opt-main">${o.main}</div><div class="opt-hint">${o.hint}</div></div>
+            </div>`;
+      }
+    });
+    h+=`</div>`;
+  }
+  else if(q.type==="scenario"){
+    h+=`<div class="scn-stack">`;
+    q.opts.forEach((o,i)=>{
+      const s=sel===o.val?"sel":"";
+      h+=`<div class="scn-card ${s}" onclick="pickScn(${i})">
+            <div class="scn-dot"></div>
+            <div><div class="scn-h">${o.h}</div><div class="scn-b">${o.b}</div></div>
+          </div>`;
+    });
+    h+=`</div>`;
+  }
+  else if(q.type==="ranking"){
+    if(!rankOrder.length||answers[q.id]===undefined) rankOrder=q.items.map((_,i)=>i);
+    h+=`<div class="rank-list" id="rk-list">`;
+    rankOrder.forEach((idx,pos)=>{
+      h+=`<div class="rank-item placed" draggable="true" data-pos="${pos}">
+            <div class="rk-num">${pos+1}</div>
+            <div class="rk-lbl">${q.items[idx].lbl}</div>
+            <span class="rk-handle">${svg("grip")}</span>
+          </div>`;
+    });
+    h+=`</div><p class="drag-note">${svg("move")} Drag items to reorder your priorities</p>`;
+    answers[q.id]=rankOrder.map(i=>q.items[i].val);
+    nb.disabled=false;
+  }
+  else if(q.type==="slider"){
+    const sv=answers[q.id]!==undefined?answers[q.id]:50;
+    sliderVal=sv;
+    const lbls=q.sliderLabels||["Very low","Low","Medium","High","Very high"];
+    const li=Math.min(4,Math.round(sv/25));
+    h+=`<div>
+          <div class="slider-context">${q.context}</div>
+          <div class="sl-ends"><span>${q.leftLabel}</span><span>${q.rightLabel}</span></div>
+          <input type="range" min="0" max="100" step="1" value="${sv}" oninput="updSlider(this.value)" />
+          <div class="sl-readout">
+            <div class="sl-big" id="sv-big">${lbls[li]}</div>
+            <div class="sl-mini" id="sv-mini">${sv}% sensitivity</div>
+          </div>
+        </div>`;
+    nb.disabled=false;
+  }
+
+  document.getElementById("q-body").innerHTML=h;
+
+  if(sel!==undefined&&!["ranking","slider"].includes(q.type)) nb.disabled=false;
+  if(q.type==="mcq-other"&&sel==="other"){
+    nb.disabled=!(answers.other_text&&answers.other_text.trim().length>2);
+    setTimeout(()=>document.getElementById("other-input")?.focus(),60);
+  }
+  if(q.type==="ranking") initDrag();
+}
+
+// ── Pickers ────────────────────────────────────────────────────────────────
+function applyScore(w){if(!w)return;Object.entries(w).forEach(([k,v])=>{if(scores[k]!==undefined)scores[k]+=v;});}
+
+function blankScores(){
+  return {urgency:0,trust:0,cost:0,relationship:0,risk:0,control:0,network:0,structured:0};
+}
+
+function calculateScoresFromAnswers(){
+  const cleanScores = blankScores();
+
+  QS.forEach(q=>{
+    const answer = answers[q.id];
+
+    if(answer === undefined || answer === null) return;
+
+    if(q.type === "slider"){
+      cleanScores.cost = Math.max(cleanScores.cost, (Number(answer)-50)/15);
+      return;
+    }
+
+    if(q.type === "ranking"){
+      return;
+    }
+
+    const weights = q.score?.[answer];
+    if(!weights) return;
+
+    Object.entries(weights).forEach(([key,value])=>{
+      if(cleanScores[key] !== undefined){
+        cleanScores[key] += value;
+      }
+    });
+  });
+
+  return cleanScores;
+}
+
+function pickFC(i){
+  const q=QS[qi];
+  document.querySelectorAll(".fc-card").forEach(c=>c.classList.remove("sel"));
+  document.querySelectorAll(".fc-card")[i].classList.add("sel");
+  answers[q.id]=q.opts[i].val;
+  applyScore(q.score?.[answers[q.id]]);
+  document.getElementById("btn-next").disabled=false;
+}
+function pickMCQ(i){
+  const q=QS[qi];
+  const exp=document.getElementById("other-expand");
+  if(exp) exp.classList.remove("open");
+  document.querySelectorAll(".opt-card").forEach(c=>c.classList.remove("sel"));
+  document.querySelectorAll(".opt-card")[i].classList.add("sel");
+  answers[q.id]=q.opts[i].val;
+  applyScore(q.score?.[answers[q.id]]);
+  document.getElementById("btn-next").disabled=false;
+}
+function pickScn(i){
+  const q=QS[qi];
+  document.querySelectorAll(".scn-card").forEach(c=>c.classList.remove("sel"));
+  document.querySelectorAll(".scn-card")[i].classList.add("sel");
+  answers[q.id]=q.opts[i].val;
+  applyScore(q.score?.[answers[q.id]]);
+  document.getElementById("btn-next").disabled=false;
+}
+function pickOther(i){
+  const q=QS[qi];
+  document.querySelectorAll(".opt-card").forEach(c=>c.classList.remove("sel"));
+  document.getElementById("other-card").classList.add("sel");
+  document.getElementById("other-expand").classList.add("open");
+  answers[q.id]="other";
+  document.getElementById("btn-next").disabled=true;
+  setTimeout(()=>document.getElementById("other-input")?.focus(),60);
+}
+function onOtherType(v){
+  answers.other_text=v;
+  document.getElementById("btn-next").disabled=v.trim().length<3;
+}
+function updSlider(v){
+  sliderVal=parseInt(v);
+  answers[QS[qi].id]=sliderVal;
+  const q=QS[qi];
+  const lbls=q.sliderLabels||["Very low","Low","Medium","High","Very high"];
+  document.getElementById("sv-big").textContent=lbls[Math.min(4,Math.round(sliderVal/25))];
+  document.getElementById("sv-mini").textContent=`${sliderVal}% sensitivity`;
+  scores.cost=Math.max(scores.cost??-99,(sliderVal-50)/15);
+}
+
+// ── Drag & Drop ────────────────────────────────────────────────────────────
+function initDrag(){
+  const list=document.getElementById("rk-list");if(!list)return;
+  list.querySelectorAll(".rank-item").forEach((item,pos)=>{
+    item.addEventListener("dragstart",()=>{dragSrc=pos;item.classList.add("dragging");});
+    item.addEventListener("dragend",()=>item.classList.remove("dragging"));
+    item.addEventListener("dragover",e=>{e.preventDefault();item.classList.add("over");});
+    item.addEventListener("dragleave",()=>item.classList.remove("over"));
+    item.addEventListener("drop",e=>{
+      e.preventDefault();item.classList.remove("over");
+      if(dragSrc===null||dragSrc===pos)return;
+      [rankOrder[dragSrc],rankOrder[pos]]=[rankOrder[pos],rankOrder[dragSrc]];
+      dragSrc=null;
+      answers[QS[qi].id]=rankOrder.map(i=>QS[qi].items[i].val);
+      renderQ();
+    });
+  });
+}
+
+// ── Archetype ──────────────────────────────────────────────────────────────
+function getArchetype(){
+  const s=scores;
+  if(s.trust<0)                       return ARCHETYPES[4];
+  if(s.urgency>=5)                    return ARCHETYPES[0];
+  if(s.relationship>=6)               return ARCHETYPES[1];
+  if(s.network>=4&&s.risk>=3)         return ARCHETYPES[2];
+  if(s.control>=5&&s.urgency<2)       return ARCHETYPES[3];
+  if(s.structured>=4||s.trust>=5)     return ARCHETYPES[5];
+  const top=Object.entries(s).sort((a,b)=>b[1]-a[1])[0][0];
+  const MAP={urgency:0,relationship:1,network:2,control:3,structured:5,trust:5};
+  return ARCHETYPES[MAP[top]??0];
+}
+
+// ── Response Recording ─────────────────────────────────────────────────────
+function recordQuizResponse(arch){
+  if(hasSubmittedResponse) return;
+  hasSubmittedResponse = true;
+
+  const payload = {
+    submittedAt: new Date().toISOString(),
+    answers: answers,
+    scores: scores,
+    archetype: {
+      id: arch.id || "",
+      name: arch.name || "",
+      tag: arch.tag || "",
+      desc: arch.desc || "",
+      insight: arch.insight || "",
+      cta: arch.cta || ""
+    }
+  };
+
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(payload)
+  }).catch(err=>{
+    console.error("Quiz response recording failed:", err);
+  });
+}
+
+// ── Result ─────────────────────────────────────────────────────────────────
+function showResult(){
+  scores = calculateScoresFromAnswers();
+
+  document.getElementById("s-quiz").classList.remove("active");
+  const rs=document.getElementById("s-result");
+  rs.classList.add("active");
+  const arch=getArchetype();
+  recordQuizResponse(arch);
+  document.getElementById("result-inner").innerHTML=`
+    <div class="result-band"></div>
+    <div class="result-eyebrow">${svg("radar")} Your Financing Profile</div>
+    <div class="result-name">${arch.name}</div>
+    <div class="result-tag">${arch.tag}</div>
+    <p class="result-desc">${arch.desc}</p>
+    <div class="insight-box">
+      <div class="insight-eyebrow">${svg("bulb")} Rank Group&rsquo;s read on you</div>
+      <p class="insight-text">${arch.insight}</p>
+    </div>
+    <div class="cta-block">
+      <div class="cta-headline">Let&rsquo;s have a different kind of conversation.</div>
+      <p class="cta-sub">Our advisors are familiar with your profile. Reach out directly &mdash; and expect a conversation that starts where most firms never get.</p>
+      <div class="cta-contacts">
+        <a class="contact-item" href="tel:+919137789101">
+          ${svg("phone")} +91 91377 89101
+        </a>
+        <a class="contact-item" href="mailto:info@rankgroup.in">
+          ${svg("mail")} info@rankgroup.in
+        </a>
+      </div>
+      <a class="btn-website" href="https://rankgroup.in" target="_blank" rel="noopener">
+        ${svg("world")} Visit rankgroup.in
+      </a>
+    </div>
+    <button class="reset-link" onclick="resetAll()">Retake the quiz</button>`;
+  rs.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+// ── Reset ──────────────────────────────────────────────────────────────────
+function resetAll(){
+  qi=0;answers={};scores={urgency:0,trust:0,cost:0,relationship:0,risk:0,control:0,network:0,structured:0};
+  rankOrder=[];sliderVal=50;hasSubmittedResponse=false;
+  document.getElementById("s-result").classList.remove("active");
+  document.getElementById("s-quiz").classList.add("active");
+  renderQ();
+  document.getElementById("s-quiz").scrollIntoView({behavior:"smooth",block:"start"});
+}
+</script>
+</body>
+</html>
