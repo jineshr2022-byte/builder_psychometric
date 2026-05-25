@@ -152,10 +152,37 @@ input[type="range"]{width:100%;accent-color:var(--gold);cursor:pointer}
 .reset-link{display:block;text-align:center;font-size:12px;color:var(--text-4);cursor:pointer;margin-top:.75rem;text-decoration:underline;text-underline-offset:3px;background:none;border:none;font-family:inherit;width:100%}
 .reset-link:hover{color:var(--text-3)}
 
+
+/* CONTACT DETAILS — OPTIONAL */
+.contact-inner{padding:3rem 2.5rem 2.5rem}
+.contact-eyebrow{font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.8rem;display:flex;align-items:center;gap:10px}
+.contact-eyebrow::after{content:'';flex:1;height:.5px;background:var(--border-2)}
+.optional-badge{display:inline-flex;align-items:center;border:.5px solid var(--gold-light);border-radius:999px;padding:3px 9px;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-text);background:var(--gold-pale);margin-bottom:1rem}
+.contact-headline{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:var(--text-1);line-height:1.16;margin-bottom:.9rem}
+.contact-headline em{color:var(--gold);font-style:italic}
+.contact-body{font-size:13.5px;color:var(--text-2);line-height:1.75;margin-bottom:1.8rem;max-width:500px}
+.contact-form{display:flex;flex-direction:column;gap:14px;margin-bottom:1.6rem}
+.contact-field{display:flex;flex-direction:column;gap:6px}
+.contact-label{font-size:11px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--text-3)}
+.contact-input{width:100%;border:.5px solid var(--border-2);border-radius:var(--r-md);background:#FFFDF8;color:var(--text-1);font-family:'DM Sans',sans-serif;font-size:14px;padding:13px 14px;outline:none;transition:border-color .2s,background .2s,box-shadow .2s}
+.contact-input:focus{border-color:var(--gold-light);background:var(--cream-dark);box-shadow:0 0 0 3px rgba(155,109,34,.08)}
+.contact-input::placeholder{color:var(--text-4);font-style:italic}
+.contact-note{font-size:12px;color:var(--text-4);line-height:1.65;font-style:italic;border-top:.5px solid var(--border-2);padding-top:1.3rem;margin-top:.3rem}
+.contact-actions{display:flex;justify-content:space-between;align-items:center;gap:1rem;border-top:.5px solid var(--border-3);padding-top:1.5rem;margin-top:1.5rem}
+.btn-skip{display:flex;align-items:center;gap:6px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text-3);cursor:pointer;padding:8px 0;transition:color .2s;text-decoration:underline;text-underline-offset:3px}
+.btn-skip:hover{color:var(--text-1)}
+.btn-continue{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:var(--gold-pale);border:none;border-radius:var(--r-sm);padding:13px 30px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:.03em;cursor:pointer;transition:background .2s,transform .15s;box-shadow:0 2px 12px rgba(26,15,2,.18)}
+.btn-continue:hover{background:var(--ink-soft)}.btn-continue:active{transform:scale(.97)}
+.btn-continue .ico{font-size:16px;color:var(--gold-pale)}
+
 @media(max-width:600px){
   body{padding:1rem .5rem 3rem}
-  .intro-inner{padding:2rem 1.5rem 2rem}
+  .intro-inner,.contact-inner{padding:2rem 1.5rem 2rem}
   .intro-headline{font-size:32px}
+  .contact-headline{font-size:28px}
+  .contact-actions{align-items:stretch;flex-direction:column-reverse}
+  .btn-continue{justify-content:center;width:100%}
+  .btn-skip{justify-content:center;width:100%}
   .q-chrome,.q-body,.nav-row{padding-left:1.5rem;padding-right:1.5rem}
   .progress-strip{margin-left:1.5rem;margin-right:1.5rem}
   .result-inner{padding:1.75rem}
@@ -190,11 +217,43 @@ input[type="range"]{width:100%;accent-color:var(--gold);cursor:pointer}
           <div class="meta-pill"><span class="ico">{ico_radar}</span> Personality result at the end</div>
           <div class="meta-pill"><span class="ico">{ico_list}</span> 10 questions</div>
         </div>
-        <button class="btn-start" onclick="startQ()">
+        <button class="btn-start" onclick="showContactScreen()">
           Begin Assessment <span class="ico">{ico_arrow_r}</span>
         </button>
         <div class="intro-rule"></div>
         <p class="intro-note">No right or wrong answers. Your instincts matter more than your analysis here. Answer as you are &mdash; not as you think you should be.</p>
+      </div>
+    </div>
+
+
+    <!-- OPTIONAL CONTACT DETAILS -->
+    <div id="s-contact" class="screen">
+      <div class="contact-inner">
+        <div class="contact-eyebrow">Before we begin</div>
+        <div class="optional-badge">Optional details</div>
+        <h2 class="contact-headline">Help us understand<br><em>who is taking the assessment.</em></h2>
+        <p class="contact-body">You can share your details so Rank Group can connect your financing profile to your company. This step is completely optional — you may continue without filling anything.</p>
+        <div class="contact-form">
+          <label class="contact-field">
+            <span class="contact-label">Name <span style="color:var(--text-4);font-weight:400">Optional</span></span>
+            <input class="contact-input" id="lead-name" type="text" placeholder="Your name" maxlength="80" autocomplete="name" />
+          </label>
+          <label class="contact-field">
+            <span class="contact-label">Company Name <span style="color:var(--text-4);font-weight:400">Optional</span></span>
+            <input class="contact-input" id="lead-company" type="text" placeholder="Company / developer name" maxlength="120" autocomplete="organization" />
+          </label>
+          <label class="contact-field">
+            <span class="contact-label">Mobile Number <span style="color:var(--text-4);font-weight:400">Optional</span></span>
+            <input class="contact-input" id="lead-mobile" type="tel" placeholder="Mobile number" maxlength="20" autocomplete="tel" inputmode="tel" />
+          </label>
+        </div>
+        <p class="contact-note">This is not a mandatory lead form. Your quiz result will still be shown even if you leave these fields blank.</p>
+        <div class="contact-actions">
+          <button class="btn-skip" onclick="skipContactAndStart()">Skip this step</button>
+          <button class="btn-continue" onclick="saveContactAndStart()">
+            Continue to Assessment <span class="ico">{ico_arrow_r}</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -432,14 +491,40 @@ const ARCHETYPES = [
 // ── Backend Recording ──────────────────────────────────────────────────────
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyn6LUXm3bK0qdnX30XHicHEXRScBFm6lO4qZOqU2J2Srur5tLOXI1NaV5xT2iyq365cA/exec";
 let hasSubmittedResponse = false;
+let contactData = { name: "", companyName: "", mobileNumber: "" };
 
 // ── State ──────────────────────────────────────────────────────────────────
 let qi=0, answers={}, scores={urgency:0,trust:0,cost:0,relationship:0,risk:0,control:0,network:0,structured:0};
 let rankOrder=[], dragSrc=null, sliderVal=50;
 
 // ── Boot ───────────────────────────────────────────────────────────────────
+function showContactScreen(){
+  document.getElementById("s-intro").classList.remove("active");
+  document.getElementById("s-contact").classList.add("active");
+  document.getElementById("s-contact").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function readContactDetails(){
+  contactData = {
+    name: (document.getElementById("lead-name")?.value || "").trim(),
+    companyName: (document.getElementById("lead-company")?.value || "").trim(),
+    mobileNumber: (document.getElementById("lead-mobile")?.value || "").trim()
+  };
+}
+
+function saveContactAndStart(){
+  readContactDetails();
+  startQ();
+}
+
+function skipContactAndStart(){
+  contactData = { name: "", companyName: "", mobileNumber: "" };
+  startQ();
+}
+
 function startQ(){
   document.getElementById("s-intro").classList.remove("active");
+  document.getElementById("s-contact").classList.remove("active");
   document.getElementById("s-quiz").classList.add("active");
   renderQ();
 }
@@ -704,6 +789,7 @@ function recordQuizResponse(arch){
 
   const payload = {
     submittedAt: new Date().toISOString(),
+    contact: contactData,
     answers: answers,
     scores: scores,
     archetype: {
@@ -769,8 +855,9 @@ function showResult(){
 // ── Reset ──────────────────────────────────────────────────────────────────
 function resetAll(){
   qi=0;answers={};scores={urgency:0,trust:0,cost:0,relationship:0,risk:0,control:0,network:0,structured:0};
-  rankOrder=[];sliderVal=50;hasSubmittedResponse=false;
+  rankOrder=[];sliderVal=50;contactData={ name: "", companyName: "", mobileNumber: "" };hasSubmittedResponse=false;hasSubmittedResponse=false;
   document.getElementById("s-result").classList.remove("active");
+  document.getElementById("s-contact").classList.remove("active");
   document.getElementById("s-quiz").classList.add("active");
   renderQ();
   document.getElementById("s-quiz").scrollIntoView({behavior:"smooth",block:"start"});
