@@ -112,13 +112,18 @@ body::before{
 
 /* RANKING */
 .rank-list{display:flex;flex-direction:column;gap:9px}
-.rank-item{display:flex;align-items:center;gap:11px;padding:.75rem 1rem;border:.5px solid var(--border-2);border-radius:var(--r-md);background:#FFFDF8;cursor:grab;user-select:none;transition:border-color .2s,background .15s,opacity .2s}
-.rank-item.dragging{opacity:.4;border-color:var(--gold)}.rank-item.over{border-color:var(--gold);background:var(--cream-dark)}
-.rk-num{width:24px;height:24px;border-radius:50%;background:var(--cream-dark);border:.5px solid var(--border-1);font-size:11px;font-weight:500;color:var(--text-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .25s,color .25s,border-color .25s}
-.rank-item.placed .rk-num{background:var(--gold);border-color:var(--gold);color:#fff}
-.rk-lbl{font-size:13.5px;color:var(--text-1);flex:1}
-.rk-handle{color:var(--text-4);font-size:16px;display:flex;align-items:center}
-.drag-note{font-size:11.5px;color:var(--text-4);margin-top:9px;font-style:italic;display:flex;align-items:center;gap:6px}
+.rank-item{display:flex;align-items:center;gap:11px;padding:.78rem 1rem;border:.5px solid var(--border-2);border-radius:var(--r-md);background:#FFFDF8;user-select:none;transition:border-color .2s,background .15s,transform .1s}
+.rank-item:hover{border-color:var(--gold-light);background:var(--cream-dark)}
+.rank-item:active{transform:scale(.99)}
+.rk-num{width:25px;height:25px;border-radius:50%;background:var(--gold);border:.5px solid var(--gold);font-size:11px;font-weight:500;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rk-lbl{font-size:13.5px;color:var(--text-1);flex:1;line-height:1.35}
+.rk-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.rk-btn{width:34px;height:34px;border:.5px solid var(--border-1);border-radius:var(--r-sm);background:var(--cream-dark);color:var(--gold-text);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s,border-color .15s,opacity .15s,transform .1s}
+.rk-btn:hover{border-color:var(--gold-light);background:var(--gold-pale)}
+.rk-btn:active{transform:scale(.94)}
+.rk-btn:disabled{opacity:.28;cursor:not-allowed;background:#FFFDF8;color:var(--text-4)}
+.drag-note{font-size:11.5px;color:var(--text-4);margin-top:9px;font-style:italic;display:flex;align-items:center;gap:6px;line-height:1.5}
+@media(max-width:600px){.rank-item{padding:.85rem .9rem}.rk-btn{width:40px;height:40px;font-size:18px}.rk-actions{gap:7px}.rk-lbl{font-size:13px}}
 
 /* SLIDER */
 .slider-context{font-size:12.5px;color:var(--text-2);line-height:1.65;padding:.9rem 1.1rem;border:.5px solid var(--border-2);border-radius:var(--r-md);background:var(--cream-dark);margin-bottom:1.5rem}
@@ -212,13 +217,13 @@ input[type="range"]{width:100%;accent-color:var(--gold);cursor:pointer}
         <h1 class="intro-headline">What kind of builder<br>are you &mdash; <em>really?</em></h1>
         <p class="intro-body">10 questions designed by real estate financing specialists &mdash; not a generic survey. Your answers reveal how you think about capital, risk, and partnerships. We use this to have a very different kind of first conversation with you.</p>
         <div class="intro-meta">
-          <div class="meta-pill"><span class="ico">{ico_clock}</span> 2&ndash;3 minutes</div>
-          <div class="meta-pill"><span class="ico">{ico_lock}</span> Confidential</div>
-          <div class="meta-pill"><span class="ico">{ico_radar}</span> Personality result at the end</div>
-          <div class="meta-pill"><span class="ico">{ico_list}</span> 10 questions</div>
+          <div class="meta-pill"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span> 2&ndash;3 minutes</div>
+          <div class="meta-pill"><span class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></span> Confidential</div>
+          <div class="meta-pill"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 12m-1 0a1 1 0 102 0 1 1 0 10-2 0"/><path d="M6.3 6.3a8 8 0 000 11.4M17.7 6.3a8 8 0 010 11.4M3.5 3.5a14 14 0 000 17M20.5 3.5a14 14 0 010 17"/></svg></span> Personality result at the end</div>
+          <div class="meta-pill"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M5 6v.01M5 12v.01M5 18v.01"/></svg></span> 10 questions</div>
         </div>
         <button class="btn-start" onclick="showContactScreen()">
-          Begin Assessment <span class="ico">{ico_arrow_r}</span>
+          Begin Assessment <span class="ico"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </button>
         <div class="intro-rule"></div>
         <p class="intro-note">No right or wrong answers. Your instincts matter more than your analysis here. Answer as you are &mdash; not as you think you should be.</p>
@@ -251,7 +256,7 @@ input[type="range"]{width:100%;accent-color:var(--gold);cursor:pointer}
         <div class="contact-actions">
           <button class="btn-skip" onclick="skipContactAndStart()">Skip this step</button>
           <button class="btn-continue" onclick="saveContactAndStart()">
-            Continue to Assessment <span class="ico">{ico_arrow_r}</span>
+            Continue to Assessment <span class="ico"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </button>
         </div>
       </div>
@@ -270,10 +275,10 @@ input[type="range"]{width:100%;accent-color:var(--gold);cursor:pointer}
       <div class="q-body" id="q-body"></div>
       <div class="nav-row">
         <button class="btn-back" id="btn-back" onclick="prevQ()">
-          <span class="ico">{ico_arrow_l}</span> Back
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></span> Back
         </button>
         <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>
-          Next <span class="ico">{ico_arrow_r}</span>
+          Next <span class="ico"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </button>
       </div>
     </div>
@@ -626,13 +631,16 @@ function renderQ(){
     if(!rankOrder.length||answers[q.id]===undefined) rankOrder=q.items.map((_,i)=>i);
     h+=`<div class="rank-list" id="rk-list">`;
     rankOrder.forEach((idx,pos)=>{
-      h+=`<div class="rank-item placed" draggable="true" data-pos="${pos}">
+      h+=`<div class="rank-item placed" data-pos="${pos}">
             <div class="rk-num">${pos+1}</div>
             <div class="rk-lbl">${q.items[idx].lbl}</div>
-            <span class="rk-handle">${svg("grip")}</span>
+            <div class="rk-actions" aria-label="Move ranking item">
+              <button class="rk-btn" type="button" onclick="moveRank(${pos}, -1)" ${pos===0?"disabled":""} aria-label="Move up">↑</button>
+              <button class="rk-btn" type="button" onclick="moveRank(${pos}, 1)" ${pos===rankOrder.length-1?"disabled":""} aria-label="Move down">↓</button>
+            </div>
           </div>`;
     });
-    h+=`</div><p class="drag-note">${svg("move")} Drag items to reorder your priorities</p>`;
+    h+=`</div><p class="drag-note">${svg("move")} Tap the up/down buttons to arrange your priorities. This works smoothly on mobile.</p>`;
     answers[q.id]=rankOrder.map(i=>q.items[i].val);
     nb.disabled=false;
   }
@@ -660,7 +668,6 @@ function renderQ(){
     nb.disabled=!(answers.other_text&&answers.other_text.trim().length>2);
     setTimeout(()=>document.getElementById("other-input")?.focus(),60);
   }
-  if(q.type==="ranking") initDrag();
 }
 
 // ── Pickers ────────────────────────────────────────────────────────────────
@@ -747,6 +754,17 @@ function updSlider(v){
   document.getElementById("sv-big").textContent=lbls[Math.min(4,Math.round(sliderVal/25))];
   document.getElementById("sv-mini").textContent=`${sliderVal}% sensitivity`;
   scores.cost=Math.max(scores.cost??-99,(sliderVal-50)/15);
+}
+
+
+function moveRank(pos, dir){
+  const q = QS[qi];
+  if(!q || q.type !== "ranking") return;
+  const newPos = pos + dir;
+  if(newPos < 0 || newPos >= rankOrder.length) return;
+  [rankOrder[pos], rankOrder[newPos]] = [rankOrder[newPos], rankOrder[pos]];
+  answers[q.id] = rankOrder.map(i => q.items[i].val);
+  renderQ();
 }
 
 // ── Drag & Drop ────────────────────────────────────────────────────────────
@@ -855,7 +873,7 @@ function showResult(){
 // ── Reset ──────────────────────────────────────────────────────────────────
 function resetAll(){
   qi=0;answers={};scores={urgency:0,trust:0,cost:0,relationship:0,risk:0,control:0,network:0,structured:0};
-  rankOrder=[];sliderVal=50;contactData={ name: "", companyName: "", mobileNumber: "" };hasSubmittedResponse=false;hasSubmittedResponse=false;
+  rankOrder=[];sliderVal=50;contactData={ name: "", companyName: "", mobileNumber: "" };hasSubmittedResponse=false;
   document.getElementById("s-result").classList.remove("active");
   document.getElementById("s-contact").classList.remove("active");
   document.getElementById("s-quiz").classList.add("active");
